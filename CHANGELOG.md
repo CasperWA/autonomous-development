@@ -3,6 +3,17 @@
 ## Unreleased
 
 ### Added
+- Standalone, run-state-free review of an arbitrary pull request or development
+  branch via `scripts/standalone_review.py` and two new skills
+  (`standalone-review`, `standalone-adversarial-review`). They run the same
+  read-only Codex invocation, output schemas (`review.schema.json`,
+  `adversarial-review.schema.json`), and reasoning profiles as the workflow
+  review phases, but require no accepted spec/plan, recorded verification, or run
+  state. The tool reviews the current worktree relative to a baseline ref
+  (auto-detected fork point, explicit `--base`, or a `--pr <n>` checkout via
+  `gh`), validates the output against the bundled schema, and supports `--kind
+  code|adversarial|both`. New prompts `prompts/standalone-code-review.md` and
+  `prompts/standalone-adversarial-review.md` back the two reviews
 - Evidence-preserving cumulative review ledger: each entry in `cumulative_findings`
   now stores the full review evidence inline (`file`, `line_start`, `description`,
   `evidence`, `recommended_fix`) plus an `origin` provenance tag

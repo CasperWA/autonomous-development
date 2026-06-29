@@ -32,8 +32,35 @@ The plugin deliberately keeps Claude as the implementation orchestrator and uses
 | `/autonomous-development:verify-feature` | Discover and run relevant repository checks |
 | `/autonomous-development:codex-review` | Run an independent structured Codex review |
 | `/autonomous-development:adversarial-review` | Challenge high-risk architecture and operational assumptions |
+| `/autonomous-development:standalone-review` | Review an arbitrary PR or branch — no run state required |
+| `/autonomous-development:standalone-adversarial-review` | Adversarially review an arbitrary PR or branch — no run state required |
 | `/autonomous-development:fix-findings` | Triage and fix validated review findings |
 | `/autonomous-development:autonomous-status` | Show workflow state and remaining gates |
+
+## Standalone review (no run state)
+
+The `standalone-review` and `standalone-adversarial-review` skills run the same
+read-only Codex review (identical schemas and reasoning profiles) as the workflow
+review phases, but against an arbitrary pull request or development branch — with
+no accepted spec/plan, recorded verification, or run state required. They review
+the current Git worktree relative to a baseline ref.
+
+```bash
+# Review the current branch against its fork point with the default branch:
+python3 scripts/standalone_review.py --kind code
+
+# Review against an explicit base ref, with an intent note:
+python3 scripts/standalone_review.py --kind both --base main --context "Add retry to the uploader"
+
+# Check out and review a GitHub PR (runs `gh pr checkout`, which mutates the worktree):
+python3 scripts/standalone_review.py --kind adversarial --pr 142
+```
+
+`--kind` selects `code`, `adversarial`, or `both`. The structured review JSON is
+written under a temp directory (override with `--output-dir`); pass `--json` to
+print the raw payload to stdout. These skills never edit product files. For the
+spec/plan/verification-gated review inside a managed run, use `codex-review` or
+`adversarial-review` instead.
 
 ## Requirements
 

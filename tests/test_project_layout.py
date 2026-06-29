@@ -21,6 +21,8 @@ class ProjectLayoutTests(unittest.TestCase):
             "verify-feature",
             "codex-review",
             "adversarial-review",
+            "standalone-review",
+            "standalone-adversarial-review",
             "fix-findings",
             "autonomous-status",
         }
@@ -76,6 +78,7 @@ class ProjectLayoutTests(unittest.TestCase):
             "OPEN_FINDINGS",
             "ACCEPTANCE_CRITERIA",
             "CHANGED_SINCE_LAST_REVIEW",
+            "CHANGED_FILES",
         }
         import re
 
